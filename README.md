@@ -1,2 +1,2 @@
 # GoogleApiCrud
-Java Crud using SPringBoot and Google Maps Api
+Java Crud using google Maps Api
