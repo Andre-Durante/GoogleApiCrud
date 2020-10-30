@@ -2,6 +2,7 @@ package com.location.crud.service;
 
 import com.location.crud.api.rest.request.LocationCrudCreateRequest;
 import com.location.crud.api.rest.response.LocationCrudCreateResponse;
+import com.location.crud.api.rest.response.LocationCrudReadResponse;
 import com.location.crud.client.GoogleClient;
 import com.location.crud.dto.GoogleClientData;
 import com.location.crud.mapper.LocationCrudDataMapper;
@@ -11,6 +12,8 @@ import com.location.crud.repository.LocationCrudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class LocationCrudService {
@@ -52,9 +55,17 @@ public class LocationCrudService {
         logger.info("Saving data on MongoDb");
         data = repository.save(data);
 
-        LocationCrudCreateResponse response = responseMapper.mapResponse(data, "Sucesso na requisição");
+        LocationCrudCreateResponse response = responseMapper.mapCreateResponse(data, "Sucesso na requisição");
 
         return response;
+    }
+
+    public Optional<LocationCrudReadResponse> searchOnMongo(String id){
+
+        logger.info("Searching on mongo: {}", id);
+        Optional<LocationCrudData> data = repository.findById(id);
+
+        return data.map(responseMapper::mapReadResponse);
     }
 
 }
