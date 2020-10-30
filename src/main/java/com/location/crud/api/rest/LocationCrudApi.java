@@ -9,9 +9,10 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.NoSuchElementException;
 
 
 @RestController
@@ -54,10 +55,10 @@ public class LocationCrudApi {
             @ApiResponse(code = 404, message = "Not found")}
     )
     public LocationCrudReadResponse searchRequest(
-            @PathVariable String id) throws Exception {
+            @PathVariable String id) {
         logger.info("Request data for search location on database: {}", id);
         return locationCrudService.searchOnMongo(id)
-                .orElseThrow(() -> new ChangeSetPersister.NotFoundException());
+                .orElseThrow(() -> new NoSuchElementException());
     }
 
 }
